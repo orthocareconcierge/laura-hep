@@ -411,6 +411,12 @@ body {
       <div class="prog-pill" id="daily-progress">0 of 0 done today</div>
       <div id="daily-list"></div>
 
+      <!-- ROTATION SECTION -->
+      <div class="section-label" style="margin-top:28px;">Rotation &mdash; Pick 3 to 4 Per Day</div>
+      <div class="card card-gold intro-card"><p id="pool-intro"></p></div>
+      <div class="prog-pill" id="pool-progress" onclick="poolProgressTap()">0 of 0 this rotation</div>
+      <div id="pool-list"></div>
+
       <!-- SESSION WRAP-UP -->
       <div class="card" style="margin-top:18px;">
         <label style="font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:7px;">How did today feel?</label>
@@ -509,12 +515,19 @@ body {
 const CLIENT_NAME = 'Laura';
 
 // --- DAILY SECTION ---------------------------------------------------
-const dailyIntro = 'This is your starting program for your right hip. Do these once a day and keep everything pain-free, no pinching. Tap an exercise for cues and video.';
+const dailyIntro = 'Do these three every day. Tap an exercise for cues and video.';
 const dailyExercises = [
   { name: 'Break the Stick', rx: '5 to 8 sec holds · 5 reps', log: false, video: 'break-the-stick.mp4',
     cues: ['Option 1 (with a stick): Lie on your back with your feet in tabletop, hips and knees at 90/90. Weave a stick between your legs so one leg rests on top of it and the other sits behind it, then hold either end. Press the top leg up into the stick and the bottom leg down into it, as if trying to break the stick in half, without letting your legs move.', 'Option 2 (no stick): Place one hand on the FRONT of one knee and your other hand BEHIND the opposite thigh. Push your legs in opposite directions against your hands and hold.', 'Keep your low back flat on the floor and hold a steady, comfortable effort.', 'Switch which leg is on top, or which way you push, and repeat.'] },
   { name: 'Transversus Abdominis (Supine, Seated, Standing)', rx: '5 to 10 sec holds · 10 reps · in all 3 positions', log: false, video: 'transverse-abdominus.mp4',
     cues: ['Find your hip bones at the front and hook your fingers just inside them on either side.', 'Gently draw your lower belly inward and feel the muscle pop up under your fingers.', 'Keep breathing normally. Do not hold your breath or tuck the pelvis.', 'This is a low-effort, deep contraction, not a hard brace.', 'Practice it lying on your back, then sitting tall, then standing, so it carries into everything you do.'] },
+  { name: 'Half-Kneeling Hip Flexor Stretch', rx: '30 sec hold · 3 reps · each side', log: false, video: 'kneeling-hip-flexor-stretch.mp4',
+    cues: ['Kneel on the leg you want to stretch, with a pad under that knee and your other foot flat in front at 90 degrees.', 'Tuck your pelvis under and squeeze the glute on the kneeling side.', 'Staying tall, gently shift your weight forward until you feel a stretch across the front of the hip and thigh.', 'Do not arch your low back. The stretch should come from the pelvic tuck, not from leaning back.'] }
+];
+
+// --- ROTATION SECTION (unused for this patient) ----------------------
+const poolIntro = 'Pick 3 to 4 of these each day and rotate through them. Keep everything pain-free. Tap one to start a fresh round once you have done them all.';
+const poolExercises = [
   { name: 'Posterior Pelvic Tilt (Floor and Standing)', rx: '5 sec holds · 10 reps · both ways', log: false, video: 'pelvic-tilt.mp4',
     cues: ['On the floor: lie on your back with knees bent and feet flat. Gently flatten your low back into the floor by tilting the pelvis under, then release.', 'Standing: stand with your back against a wall or in a corner for support. Tuck your pelvis so your low back gently flattens toward the wall, then release.', 'Keep it a small, controlled motion and keep breathing.', 'Use the wall or corner for feedback and support until it feels easy.'] },
   { name: 'Bridging', rx: '8 to 10 reps · 2 sets', log: false, video: 'bridge.mp4',
@@ -522,14 +535,8 @@ const dailyExercises = [
   { name: 'Sidelying Hip Abduction', rx: '10 to 12 reps · 2 sets · each side', log: false, video: 'sidelying-leg-lift.mp4',
     cues: ['Lie on your side with your bottom leg bent and your top leg straight, hips stacked.', 'Lift your top leg straight up toward the ceiling, leading with the heel, only as high as stays comfortable.', 'Keep your toes pointing forward (not up) and do not let your hip roll back.', 'Lower slowly with control. Keep it pain-free at the hip.'] },
   { name: 'Hip Traction (3 Ways)', rx: '30 to 60 sec holds · each way', log: false, video: 'traction.mp4', video2: 'hip-mobility-with-band-traction.mp4',
-    cues: ['These gently decompress the hip joint so it is not pinching. Keep every one comfortable, never a sharp pull.', 'Half-kneeling: with a band looped high around the top of your thigh in the groin crease and anchored behind you, drop into a half-kneel and let the band draw the hip back. Rock gently.', 'On your back, lateral pull: lying down with the band high around the top of your thigh at the groin and anchored out to the side, let it pull the hip outward, away from the socket. Relax and breathe.', 'On your back with a foam roller: place a foam roller between your thighs with the band giving traction, and let the hip decompress while you stay relaxed and let the pull do the work.', 'Stop and ease off any one that pinches or hurts.'] },
-  { name: 'Half-Kneeling Hip Flexor Stretch', rx: '30 sec hold · 3 reps · each side', log: false, video: 'kneeling-hip-flexor-stretch.mp4',
-    cues: ['Kneel on the leg you want to stretch, with a pad under that knee and your other foot flat in front at 90 degrees.', 'Tuck your pelvis under and squeeze the glute on the kneeling side.', 'Staying tall, gently shift your weight forward until you feel a stretch across the front of the hip and thigh.', 'Do not arch your low back. The stretch should come from the pelvic tuck, not from leaning back.'] }
+    cues: ['These gently decompress the hip joint so it is not pinching. Keep every one comfortable, never a sharp pull.', 'Half-kneeling: with a band looped high around the top of your thigh in the groin crease and anchored behind you, drop into a half-kneel and let the band draw the hip back. Rock gently.', 'On your back, lateral pull: lying down with the band high around the top of your thigh at the groin and anchored out to the side, let it pull the hip outward, away from the socket. Relax and breathe.', 'On your back with a foam roller: place a foam roller between your thighs with the band giving traction, and let the hip decompress while you stay relaxed and let the pull do the work.', 'Stop and ease off any one that pinches or hurts.'] }
 ];
-
-// --- ROTATION SECTION (unused for this patient) ----------------------
-const poolIntro = '';
-const poolExercises = [];
 
 // --- GOALS -----------------------------------------------------------
 const goals = [
@@ -637,8 +644,11 @@ function doneCount(section) {
 function renderToday() {
   document.getElementById('client-name-hero').textContent = CLIENT_NAME;
   document.getElementById('daily-intro').textContent = dailyIntro;
+  document.getElementById('pool-intro').textContent = poolIntro;
   document.getElementById('daily-list').innerHTML = sectionData('daily').map((ex, i) => exerciseCard('daily', i, ex)).join('');
+  document.getElementById('pool-list').innerHTML = sectionData('pool').map((ex, i) => exerciseCard('pool', i, ex)).join('');
   updateProgress('daily');
+  updateProgress('pool');
   document.getElementById('session-notes').value = hepLog['s-' + todayKey() + '-notes'] || '';
 }
 
