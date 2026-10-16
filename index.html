@@ -521,7 +521,7 @@ const dailyExercises = [
     cues: ['First set your transversus (draw the lower belly in), then your posterior pelvic tilt (low back flat).', 'Keeping both, press through your heels and lift your hips up, squeezing your glutes at the top.', 'Drive from the glutes, NOT the low back. You should feel this in your glutes. If you feel it in your back, lower the height and reset the tilt first.', 'Lower with control, keeping your rib cage down.'] },
   { name: 'Sidelying Hip Abduction', rx: '10 to 12 reps · 2 sets · each side', log: false, video: 'sidelying-leg-lift.mp4',
     cues: ['Lie on your side with your bottom leg bent and your top leg straight, hips stacked.', 'Lift your top leg straight up toward the ceiling, leading with the heel, only as high as stays comfortable.', 'Keep your toes pointing forward (not up) and do not let your hip roll back.', 'Lower slowly with control. Keep it pain-free at the hip.'] },
-  { name: 'Hip Traction (3 Ways)', rx: '30 to 60 sec holds · each way', log: false, video: 'traction.mp4',
+  { name: 'Hip Traction (3 Ways)', rx: '30 to 60 sec holds · each way', log: false, video: 'traction.mp4', video2: 'hip-mobility-with-band-traction.mp4',
     cues: ['These gently decompress the hip joint so it is not pinching. Keep every one comfortable, never a sharp pull.', 'Half-kneeling: with a band looped high around the top of your thigh in the groin crease and anchored behind you, drop into a half-kneel and let the band draw the hip back. Rock gently.', 'On your back, lateral pull: lying down with the band high around the top of your thigh at the groin and anchored out to the side, let it pull the hip outward, away from the socket. Relax and breathe.', 'On your back with a foam roller: place a foam roller between your thighs with the band giving traction, and let the hip decompress while you stay relaxed and let the pull do the work.', 'Stop and ease off any one that pinches or hurts.'] },
   { name: 'Half-Kneeling Hip Flexor Stretch', rx: '30 sec hold · 3 reps · each side', log: false, video: 'kneeling-hip-flexor-stretch.mp4',
     cues: ['Kneel on the leg you want to stretch, with a pad under that knee and your other foot flat in front at 90 degrees.', 'Tuck your pelvis under and squeeze the glute on the kneeling side.', 'Staying tall, gently shift your weight forward until you feel a stretch across the front of the hip and thigh.', 'Do not arch your low back. The stretch should come from the pelvic tuck, not from leaning back.'] }
@@ -658,6 +658,7 @@ function exerciseCard(section, idx, ex) {
     </div>
     <div class="exercise-body">
       ${ex.video ? `<div class="exercise-video"><video src="${ex.video}?v=2" autoplay muted loop playsinline preload="metadata"></video></div>` : ''}
+      ${ex.video2 ? `<div class="exercise-video"><video src="${ex.video2}?v=2" autoplay muted loop playsinline preload="metadata"></video></div>` : ''}
       <div class="cue-box"><h5>Coaching Cues</h5><ul>${ex.cues.map(c => `<li>${c}</li>`).join('')}</ul></div>
       ${ex.log ? renderLogBlock(section, idx, sets) : ''}
       <textarea class="notes-input" placeholder="Notes on this exercise..." onchange="saveExNotes('${section}',${idx},this.value)">${notes}</textarea>
